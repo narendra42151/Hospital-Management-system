@@ -11,9 +11,9 @@ import java.util.Properties;
  * Finally it falls back to sensible defaults used by the app.
  */
 public class DBConfig {
-    private static final String DEFAULT_URL = "jdbc:mysql://localhost:3306/hospital?useSSL=false&serverTimezone=UTC";
+    private static final String DEFAULT_URL = "jdbc:mysql://127.0.0.1:3306/hospital?user=root";
     private static final String DEFAULT_USER = "root";
-    private static final String DEFAULT_PASS = "Admin@123";
+    private static final String DEFAULT_PASS = "Rvddraje42151@";
 
     private static String url;
     private static String user;

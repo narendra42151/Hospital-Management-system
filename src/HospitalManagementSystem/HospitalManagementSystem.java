@@ -5,15 +5,11 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import HospitalManagementSystem.DBConfig;
 import java.util.Scanner;
-import java.util.Properties;
-import java.io.FileInputStream;
-import java.io.IOException;
 
 public class HospitalManagementSystem {
-    private static final String url = "jdbc:mysql://localhost:3306/hospital";
-    private static final String username = "root";
-    private static final String password = "Admin@123";
+    // Use DBConfig to allow environment/properties/default override
 
     public static void main(String[] args) {
         try{
@@ -22,28 +18,11 @@ public class HospitalManagementSystem {
             e.printStackTrace();
         }
         Scanner scanner = new Scanner(System.in);
-
-        // Load DB credentials from environment or config.properties (fallback to defaults below)
-        String dbUrl = System.getenv("DB_URL");
-        String dbUser = System.getenv("DB_USER");
-        String dbPass = System.getenv("DB_PASS");
-        if(dbUrl == null || dbUser == null || dbPass == null){
-            Properties props = new Properties();
-            try(FileInputStream in = new FileInputStream("config.properties")){
-                props.load(in);
-                if(dbUrl == null) dbUrl = props.getProperty("db.url");
-                if(dbUser == null) dbUser = props.getProperty("db.user");
-                if(dbPass == null) dbPass = props.getProperty("db.pass");
-            }catch(IOException e){
-                // config file not found or unreadable — we'll fall back to defaults
-            }
-        }
-        if(dbUrl == null) dbUrl = url;
-        if(dbUser == null) dbUser = username;
-        if(dbPass == null) dbPass = password;
-
         try{
-            Connection connection = DriverManager.getConnection(dbUrl, dbUser, dbPass);
+            String url = DBConfig.getUrl();
+            String username = DBConfig.getUser();
+            String password = DBConfig.getPass();
+            Connection connection = DriverManager.getConnection(url, username, password);
             Patient patient = new Patient(connection, scanner);
             Doctor doctor = new Doctor(connection);
             while(true){
@@ -144,23 +123,22 @@ public class HospitalManagementSystem {
         System.out.print("Enter appointment date (YYYY-MM-DD): ");
         String appointmentDate = scanner.next();
         if(patient.getPatientById(patientId) && doctor.getDoctorById(doctorId)){
-            if(checkDoctorAvailability(doctorId, appointmentDate, connection)){
-                String appointmentQuery = "INSERT INTO appointments(patient_id, doctor_id, appointment_date) VALUES(?, ?, ?)";
-                try {
-                    PreparedStatement preparedStatement = connection.prepareStatement(appointmentQuery);
-                    preparedStatement.setInt(1, patientId);
-                    preparedStatement.setInt(2, doctorId);
-                    preparedStatement.setString(3, appointmentDate);
-                    int rowsAffected = preparedStatement.executeUpdate();
-                    if(rowsAffected>0){
-                        System.out.println("Appointment Booked!");
-                    }else{
-                        System.out.println("Failed to Book Appointment!");
+                if(checkDoctorAvailability(doctorId, appointmentDate, connection)){
+                    String appointmentQuery = "INSERT INTO appointments(patient_id, doctor_id, appointment_date) VALUES(?, ?, ?)";
+                    try (PreparedStatement preparedStatement = connection.prepareStatement(appointmentQuery)){
+                        preparedStatement.setInt(1, patientId);
+                        preparedStatement.setInt(2, doctorId);
+                        preparedStatement.setString(3, appointmentDate);
+                        int rowsAffected = preparedStatement.executeUpdate();
+                        if(rowsAffected>0){
+                            System.out.println("Appointment Booked!");
+                        }else{
+                            System.out.println("Failed to Book Appointment!");
+                        }
+                    }catch (SQLException e){
+                        e.printStackTrace();
                     }
-                }catch (SQLException e){
-                    e.printStackTrace();
-                }
-            }else{
+                }else{
                 System.out.println("Doctor not available on this date!!");
             }
         }else{
@@ -170,17 +148,13 @@ public class HospitalManagementSystem {
 
     public static boolean checkDoctorAvailability(int doctorId, String appointmentDate, Connection connection){
         String query = "SELECT COUNT(*) FROM appointments WHERE doctor_id = ? AND appointment_date = ?";
-        try{
-            PreparedStatement preparedStatement = connection.prepareStatement(query);
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)){
             preparedStatement.setInt(1, doctorId);
             preparedStatement.setString(2, appointmentDate);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            if(resultSet.next()){
-                int count = resultSet.getInt(1);
-                if(count==0){
-                    return true;
-                }else{
-                    return false;
+            try (ResultSet resultSet = preparedStatement.executeQuery()){
+                if(resultSet.next()){
+                    int count = resultSet.getInt(1);
+                    return count == 0;
                 }
             }
         } catch (SQLException e){
@@ -195,14 +169,13 @@ public class HospitalManagementSystem {
                 "JOIN patients p ON a.patient_id = p.id " +
                 "JOIN doctors d ON a.doctor_id = d.id " +
                 "ORDER BY a.appointment_date";
-        try{
-            PreparedStatement ps = connection.prepareStatement(query);
-            ResultSet rs = ps.executeQuery();
-            System.out.println("Appointments:");
-            System.out.println("+----+--------------------+--------------------+------------+");
-            System.out.println("| ID | Patient            | Doctor             | Date       |");
-            System.out.println("+----+--------------------+--------------------+------------+");
-            boolean any = false;
+        System.out.println("Appointments:");
+        System.out.println("+----+--------------------+--------------------+------------+");
+        System.out.println("| ID | Patient            | Doctor             | Date       |");
+        System.out.println("+----+--------------------+--------------------+------------+");
+        boolean any = false;
+        try (PreparedStatement ps = connection.prepareStatement(query);
+             ResultSet rs = ps.executeQuery()){
             while(rs.next()){
                 any = true;
                 int id = rs.getInt("id");
@@ -231,13 +204,13 @@ public class HospitalManagementSystem {
             return;
         }
         String check = "SELECT * FROM appointments WHERE id = ?";
-        try{
-            PreparedStatement ps = connection.prepareStatement(check);
+        try (PreparedStatement ps = connection.prepareStatement(check)){
             ps.setInt(1, id);
-            ResultSet rs = ps.executeQuery();
-            if(!rs.next()){
-                System.out.println("Appointment with id " + id + " does not exist.");
-                return;
+            try (ResultSet rs = ps.executeQuery()){
+                if(!rs.next()){
+                    System.out.println("Appointment with id " + id + " does not exist.");
+                    return;
+                }
             }
             System.out.print("Are you sure you want to cancel this appointment? (y/n): ");
             String confirm = scanner.next();
@@ -246,13 +219,14 @@ public class HospitalManagementSystem {
                 return;
             }
             String delete = "DELETE FROM appointments WHERE id = ?";
-            PreparedStatement ps2 = connection.prepareStatement(delete);
-            ps2.setInt(1, id);
-            int rows = ps2.executeUpdate();
-            if(rows>0){
-                System.out.println("Appointment cancelled.");
-            }else{
-                System.out.println("Failed to cancel appointment.");
+            try (PreparedStatement ps2 = connection.prepareStatement(delete)){
+                ps2.setInt(1, id);
+                int rows = ps2.executeUpdate();
+                if(rows>0){
+                    System.out.println("Appointment cancelled.");
+                }else{
+                    System.out.println("Failed to cancel appointment.");
+                }
             }
         }catch(SQLException e){
             e.printStackTrace();

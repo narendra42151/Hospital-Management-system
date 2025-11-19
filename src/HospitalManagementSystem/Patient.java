@@ -25,15 +25,16 @@ public class Patient {
 
         try{
             String query = "INSERT INTO patients(name, age, gender) VALUES(?, ?, ?)";
-            PreparedStatement preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setString(1, name);
-            preparedStatement.setInt(2, age);
-            preparedStatement.setString(3, gender);
-            int affectedRows = preparedStatement.executeUpdate();
-            if(affectedRows>0){
-                System.out.println("Patient Added Successfully!!");
-            }else{
-                System.out.println("Failed to add Patient!!");
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)){
+                preparedStatement.setString(1, name);
+                preparedStatement.setInt(2, age);
+                preparedStatement.setString(3, gender);
+                int affectedRows = preparedStatement.executeUpdate();
+                if(affectedRows>0){
+                    System.out.println("Patient Added Successfully!!");
+                }else{
+                    System.out.println("Failed to add Patient!!");
+                }
             }
 
         }catch (SQLException e){
@@ -44,19 +45,20 @@ public class Patient {
     public void viewPatients(){
         String query = "select * from patients";
         try{
-            PreparedStatement preparedStatement = connection.prepareStatement(query);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            System.out.println("Patients: ");
-            System.out.println("+------------+--------------------+----------+------------+");
-            System.out.println("| Patient Id | Name               | Age      | Gender     |");
-            System.out.println("+------------+--------------------+----------+------------+");
-            while(resultSet.next()){
-                int id = resultSet.getInt("id");
-                String name = resultSet.getString("name");
-                int age = resultSet.getInt("age");
-                String gender = resultSet.getString("gender");
-                System.out.printf("| %-10s | %-18s | %-8s | %-10s |\n", id, name, age, gender);
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query);
+                 ResultSet resultSet = preparedStatement.executeQuery()){
+                System.out.println("Patients: ");
                 System.out.println("+------------+--------------------+----------+------------+");
+                System.out.println("| Patient Id | Name               | Age      | Gender     |");
+                System.out.println("+------------+--------------------+----------+------------+");
+                while(resultSet.next()){
+                    int id = resultSet.getInt("id");
+                    String name = resultSet.getString("name");
+                    int age = resultSet.getInt("age");
+                    String gender = resultSet.getString("gender");
+                    System.out.printf("| %-10s | %-18s | %-8s | %-10s |\n", id, name, age, gender);
+                    System.out.println("+------------+--------------------+----------+------------+");
+                }
             }
 
         }catch (SQLException e){
@@ -67,13 +69,11 @@ public class Patient {
     public boolean getPatientById(int id){
         String query = "SELECT * FROM patients WHERE id = ?";
         try{
-            PreparedStatement preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setInt(1, id);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            if(resultSet.next()){
-                return true;
-            }else{
-                return false;
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)){
+                preparedStatement.setInt(1, id);
+                try (ResultSet resultSet = preparedStatement.executeQuery()){
+                    return resultSet.next();
+                }
             }
         }catch (SQLException e){
             e.printStackTrace();
@@ -104,16 +104,17 @@ public class Patient {
 
         String query = "UPDATE patients SET name = ?, age = ?, gender = ? WHERE id = ?";
         try{
-            PreparedStatement preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setString(1, name);
-            preparedStatement.setInt(2, age);
-            preparedStatement.setString(3, gender);
-            preparedStatement.setInt(4, id);
-            int rows = preparedStatement.executeUpdate();
-            if(rows>0){
-                System.out.println("Patient updated successfully.");
-            }else{
-                System.out.println("Failed to update patient.");
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)){
+                preparedStatement.setString(1, name);
+                preparedStatement.setInt(2, age);
+                preparedStatement.setString(3, gender);
+                preparedStatement.setInt(4, id);
+                int rows = preparedStatement.executeUpdate();
+                if(rows>0){
+                    System.out.println("Patient updated successfully.");
+                }else{
+                    System.out.println("Failed to update patient.");
+                }
             }
         }catch(SQLException e){
             e.printStackTrace();
@@ -144,17 +145,19 @@ public class Patient {
         String deleteAppointments = "DELETE FROM appointments WHERE patient_id = ?";
         String deletePatient = "DELETE FROM patients WHERE id = ?";
         try{
-            PreparedStatement ps1 = connection.prepareStatement(deleteAppointments);
-            ps1.setInt(1, id);
-            ps1.executeUpdate();
+            try (PreparedStatement ps1 = connection.prepareStatement(deleteAppointments)){
+                ps1.setInt(1, id);
+                ps1.executeUpdate();
+            }
 
-            PreparedStatement ps2 = connection.prepareStatement(deletePatient);
-            ps2.setInt(1, id);
-            int rows = ps2.executeUpdate();
-            if(rows>0){
-                System.out.println("Patient and related appointments deleted.");
-            }else{
-                System.out.println("Failed to delete patient.");
+            try (PreparedStatement ps2 = connection.prepareStatement(deletePatient)){
+                ps2.setInt(1, id);
+                int rows = ps2.executeUpdate();
+                if(rows>0){
+                    System.out.println("Patient and related appointments deleted.");
+                }else{
+                    System.out.println("Failed to delete patient.");
+                }
             }
         }catch(SQLException e){
             e.printStackTrace();
@@ -166,25 +169,27 @@ public class Patient {
         String name = scanner.next();
         String query = "SELECT * FROM patients WHERE name LIKE ?";
         try{
-            PreparedStatement preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setString(1, "%" + name + "%");
-            ResultSet resultSet = preparedStatement.executeQuery();
-            System.out.println("Search results: ");
-            System.out.println("+------------+--------------------+----------+------------+");
-            System.out.println("| Patient Id | Name               | Age      | Gender     |");
-            System.out.println("+------------+--------------------+----------+------------+");
-            boolean any = false;
-            while(resultSet.next()){
-                any = true;
-                int id = resultSet.getInt("id");
-                String pname = resultSet.getString("name");
-                int age = resultSet.getInt("age");
-                String gender = resultSet.getString("gender");
-                System.out.printf("| %-10s | %-18s | %-8s | %-10s |\n", id, pname, age, gender);
-                System.out.println("+------------+--------------------+----------+------------+");
-            }
-            if(!any){
-                System.out.println("No patients found matching: " + name);
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query)){
+                preparedStatement.setString(1, "%" + name + "%");
+                try (ResultSet resultSet = preparedStatement.executeQuery()){
+                    System.out.println("Search results: ");
+                    System.out.println("+------------+--------------------+----------+------------+");
+                    System.out.println("| Patient Id | Name               | Age      | Gender     |");
+                    System.out.println("+------------+--------------------+----------+------------+");
+                    boolean any = false;
+                    while(resultSet.next()){
+                        any = true;
+                        int id = resultSet.getInt("id");
+                        String pname = resultSet.getString("name");
+                        int age = resultSet.getInt("age");
+                        String gender = resultSet.getString("gender");
+                        System.out.printf("| %-10s | %-18s | %-8s | %-10s |\n", id, pname, age, gender);
+                        System.out.println("+------------+--------------------+----------+------------+");
+                    }
+                    if(!any){
+                        System.out.println("No patients found matching: " + name);
+                    }
+                }
             }
         }catch(SQLException e){
             e.printStackTrace();

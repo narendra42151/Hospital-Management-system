@@ -1,0 +1,261 @@
+[0.030s][warning][cds] A jar file is not the one used while building the shared archive file: C:\Users\naren\AppData\Roaming\Code\User\globalStorage\pleiades.java-extension-pack-jdk\java\21\lib\modules
+[0.030s][warning][cds] A jar file is not the one used while building the shared archive file: C:\Users\naren\AppData\Roaming\Code\User\globalStorage\pleiades.java-extension-pack-jdk\java\21\lib\modules
+[0.030s][warning][cds] C:\Users\naren\AppData\Roaming\Code\User\globalStorage\pleiades.java-extension-pack-jdk\java\21\lib\modules timestamp has changed.
+HOSPITAL MANAGEMENT SYSTEM 
+1. Add Patient
+2. View Patients
+3. Update Patient
+4. Delete Patient
+5. Search Patients by Name
+6. View Doctors
+7. Add Doctor
+8. Remove Doctor
+9. Book Appointment
+10. View Appointments
+11. Cancel Appointment
+12. Exit
+Enter your choice: Enter Doctor Name: Enter Specialization: Doctor added successfully.
+
+HOSPITAL MANAGEMENT SYSTEM 
+1. Add Patient
+2. View Patients
+3. Update Patient
+4. Delete Patient
+5. Search Patients by Name
+6. View Doctors
+7. Add Doctor
+8. Remove Doctor
+9. Book Appointment
+10. View Appointments
+11. Cancel Appointment
+12. Exit
+Enter your choice: Doctors: 
++------------+--------------------+------------------+
+| Doctor Id  | Name               | Specialization   |
++------------+--------------------+------------------+
+| 1          | Dr.                | Adams            |
++------------+--------------------+------------------+
+| 2          | DrAdams            | Cardiology       |
++------------+--------------------+------------------+
+
+HOSPITAL MANAGEMENT SYSTEM 
+1. Add Patient
+2. View Patients
+3. Update Patient
+4. Delete Patient
+5. Search Patients by Name
+6. View Doctors
+7. Add Doctor
+8. Remove Doctor
+9. Book Appointment
+10. View Appointments
+11. Cancel Appointment
+12. Exit
+Enter your choice: Enter Patient Name: Enter Patient Age: Enter Patient Gender: Patient Added Successfully!!
+
+HOSPITAL MANAGEMENT SYSTEM 
+1. Add Patient
+2. View Patients
+3. Update Patient
+4. Delete Patient
+5. Search Patients by Name
+6. View Doctors
+7. Add Doctor
+8. Remove Doctor
+9. Book Appointment
+10. View Appointments
+11. Cancel Appointment
+12. Exit
+Enter your choice: Patients: 
++------------+--------------------+----------+------------+
+| Patient Id | Name               | Age      | Gender     |
++------------+--------------------+----------+------------+
+| 1          | JohnDoe            | 45       | Male       |
++------------+--------------------+----------+------------+
+
+HOSPITAL MANAGEMENT SYSTEM 
+1. Add Patient
+2. View Patients
+3. Update Patient
+4. Delete Patient
+5. Search Patients by Name
+6. View Doctors
+7. Add Doctor
+8. Remove Doctor
+9. Book Appointment
+10. View Appointments
+11. Cancel Appointment
+12. Exit
+Enter your choice: Enter Patient Id: Enter Doctor Id: Enter appointment date (YYYY-MM-DD): Appointment Booked!
+
+HOSPITAL MANAGEMENT SYSTEM 
+1. Add Patient
+2. View Patients
+3. Update Patient
+4. Delete Patient
+5. Search Patients by Name
+6. View Doctors
+7. Add Doctor
+8. Remove Doctor
+9. Book Appointment
+10. View Appointments
+11. Cancel Appointment
+12. Exit
+Enter your choice: Appointments:
++----+--------------------+--------------------+------------+
+| ID | Patient            | Doctor             | Date       |
++----+--------------------+--------------------+------------+
+| 1  | JohnDoe            | Dr.                | 2025-12-01 |
++----+--------------------+--------------------+------------+
+
+HOSPITAL MANAGEMENT SYSTEM 
+1. Add Patient
+2. View Patients
+3. Update Patient
+4. Delete Patient
+5. Search Patients by Name
+6. View Doctors
+7. Add Doctor
+8. Remove Doctor
+9. Book Appointment
+10. View Appointments
+11. Cancel Appointment
+12. Exit
+Enter your choice: Enter Patient Id to update: Enter new name: Enter new age: Enter new gender: Patient updated successfully.
+
+HOSPITAL MANAGEMENT SYSTEM 
+1. Add Patient
+2. View Patients
+3. Update Patient
+4. Delete Patient
+5. Search Patients by Name
+6. View Doctors
+7. Add Doctor
+8. Remove Doctor
+9. Book Appointment
+10. View Appointments
+11. Cancel Appointment
+12. Exit
+Enter your choice: Patients: 
++------------+--------------------+----------+------------+
+| Patient Id | Name               | Age      | Gender     |
++------------+--------------------+----------+------------+
+| 1          | JohnathanDoe       | 46       | Male       |
++------------+--------------------+----------+------------+
+
+HOSPITAL MANAGEMENT SYSTEM 
+1. Add Patient
+2. View Patients
+3. Update Patient
+4. Delete Patient
+5. Search Patients by Name
+6. View Doctors
+7. Add Doctor
+8. Remove Doctor
+9. Book Appointment
+10. View Appointments
+11. Cancel Appointment
+12. Exit
+Enter your choice: Enter Appointment Id to cancel: Are you sure you want to cancel this appointment? (y/n): Appointment cancelled.
+
+HOSPITAL MANAGEMENT SYSTEM 
+1. Add Patient
+2. View Patients
+3. Update Patient
+4. Delete Patient
+5. Search Patients by Name
+6. View Doctors
+7. Add Doctor
+8. Remove Doctor
+9. Book Appointment
+10. View Appointments
+11. Cancel Appointment
+12. Exit
+Enter your choice: Appointments:
++----+--------------------+--------------------+------------+
+| ID | Patient            | Doctor             | Date       |
++----+--------------------+--------------------+------------+
+No appointments found.
+
+HOSPITAL MANAGEMENT SYSTEM 
+1. Add Patient
+2. View Patients
+3. Update Patient
+4. Delete Patient
+5. Search Patients by Name
+6. View Doctors
+7. Add Doctor
+8. Remove Doctor
+9. Book Appointment
+10. View Appointments
+11. Cancel Appointment
+12. Exit
+Enter your choice: Enter Patient Id to delete: Are you sure you want to delete this patient and their appointments? (y/n): Patient and related appointments deleted.
+
+HOSPITAL MANAGEMENT SYSTEM 
+1. Add Patient
+2. View Patients
+3. Update Patient
+4. Delete Patient
+5. Search Patients by Name
+6. View Doctors
+7. Add Doctor
+8. Remove Doctor
+9. Book Appointment
+10. View Appointments
+11. Cancel Appointment
+12. Exit
+Enter your choice: Patients: 
++------------+--------------------+----------+------------+
+| Patient Id | Name               | Age      | Gender     |
++------------+--------------------+----------+------------+
+
+HOSPITAL MANAGEMENT SYSTEM 
+1. Add Patient
+2. View Patients
+3. Update Patient
+4. Delete Patient
+5. Search Patients by Name
+6. View Doctors
+7. Add Doctor
+8. Remove Doctor
+9. Book Appointment
+10. View Appointments
+11. Cancel Appointment
+12. Exit
+Enter your choice: Enter Doctor Id to delete: Are you sure you want to delete this doctor and their appointments? (y/n): Doctor and related appointments deleted.
+
+HOSPITAL MANAGEMENT SYSTEM 
+1. Add Patient
+2. View Patients
+3. Update Patient
+4. Delete Patient
+5. Search Patients by Name
+6. View Doctors
+7. Add Doctor
+8. Remove Doctor
+9. Book Appointment
+10. View Appointments
+11. Cancel Appointment
+12. Exit
+Enter your choice: Doctors: 
++------------+--------------------+------------------+
+| Doctor Id  | Name               | Specialization   |
++------------+--------------------+------------------+
+| 2          | DrAdams            | Cardiology       |
++------------+--------------------+------------------+
+
+HOSPITAL MANAGEMENT SYSTEM 
+1. Add Patient
+2. View Patients
+3. Update Patient
+4. Delete Patient
+5. Search Patients by Name
+6. View Doctors
+7. Add Doctor
+8. Remove Doctor
+9. Book Appointment
+10. View Appointments
+11. Cancel Appointment
+12. Exit
+Enter your choice: THANK YOU! FOR USING HOSPITAL MANAGEMENT SYSTEM!!

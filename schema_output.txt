@@ -1,0 +1,11 @@
+[0.033s][warning][cds] A jar file is not the one used while building the shared archive file: C:\Users\naren\AppData\Roaming\Code\User\globalStorage\pleiades.java-extension-pack-jdk\java\21\lib\modules
+[0.033s][warning][cds] A jar file is not the one used while building the shared archive file: C:\Users\naren\AppData\Roaming\Code\User\globalStorage\pleiades.java-extension-pack-jdk\java\21\lib\modules
+[0.033s][warning][cds] C:\Users\naren\AppData\Roaming\Code\User\globalStorage\pleiades.java-extension-pack-jdk\java\21\lib\modules timestamp has changed.
+Executed: CREATE DATABASE IF NOT EXISTS hospital
+Executed: USE hospital
+Executed: CREATE TABLE IF NOT EXISTS patients (
+  id INT AUTO_INCREMEN...
+Executed: CREATE TABLE IF NOT EXISTS doctors (
+  id INT AUTO_INCREMENT...
+Executed: CREATE TABLE IF NOT EXISTS appointments (
+  id INT AUTO_INCR...
